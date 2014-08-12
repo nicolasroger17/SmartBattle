@@ -1,0 +1,22 @@
+@import "base";
+
+.block{
+	height: 60px;
+	width: 60px;
+	float: left;
+}
+.block[type='void'], .block[type='NULL'], .block[type='1']{
+	background: #eeeeee;
+}
+.block[type='obstacle'], .block[type='TRIED'], .block[type='0']{
+	background: #000000;
+}
+.block[type='start']{
+	background: #555;
+}
+.block[type='end']{
+	background: #bbb;
+}
+.block[type='PATH']{
+	background: red;
+}

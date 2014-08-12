@@ -1,0 +1,31 @@
+/* line 3, ../compass/sass/game/game.scss */
+.block {
+  height: 60px;
+  width: 60px;
+  float: left;
+}
+
+/* line 8, ../compass/sass/game/game.scss */
+.block[type='void'], .block[type='NULL'], .block[type='1'] {
+  background: #eeeeee;
+}
+
+/* line 11, ../compass/sass/game/game.scss */
+.block[type='obstacle'], .block[type='TRIED'], .block[type='0'] {
+  background: #000000;
+}
+
+/* line 14, ../compass/sass/game/game.scss */
+.block[type='start'] {
+  background: #555;
+}
+
+/* line 17, ../compass/sass/game/game.scss */
+.block[type='end'] {
+  background: #bbb;
+}
+
+/* line 20, ../compass/sass/game/game.scss */
+.block[type='PATH'] {
+  background: red;
+}

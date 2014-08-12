@@ -1,0 +1,10 @@
+<div id="header">
+	<% if(!isConnected) { %>
+		<a href='/connexion' class='header_button'>Login</a>
+		<a href='/register' class='header_button'>Sign In</a>
+	<% } else { %>
+		<a href='/account' class='header_button'>Mon compte</a>
+	<% } %>
+	<a href='/home' class='home'>Monster Attack</a>
+	<a href='/deconnexion' id="header_right">Déconnexion</a>
+</div>

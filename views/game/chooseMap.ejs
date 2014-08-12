@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+	<head>
+		<title>chooseMap</title>
+		<link rel="stylesheet" type="text/css" href="/webroot/css/chooseMap.css">
+	</head>
+	<body>
+		<div class='container'>
+			<h1>chooseMap</h1>
+			<% for(var i = 0; i < maps.length; i++) {%>
+			   <a href="/game/<%= maps[i] %>"><%= maps[i] %></a>
+			<% } %>
+		</div>
+		<script type="text/javascript" src='/webroot/js/APIs/jquery.js'></script>
+		<script type="text/javascript" src='/webroot/js/chooseMap.js'></script>
+	</body>
+</html>

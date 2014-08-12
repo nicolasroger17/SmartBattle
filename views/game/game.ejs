@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Game - <%= map.name %></title>
+		<link rel="stylesheet" type="text/css" href="/webroot/css/game/game.css">
+	</head>
+	<body>
+		<div class='container'>
+			<h1>Game - <%= map.name %></h1>
+			<div style='height:<%= map.height * 60 %>px; width: <%= map.width * 60 %>px;'>
+				<% for(var i = 0; i < map.map.length; i++) {%>
+					<% for(var j = 0; j < map.map[i].length; j++) {%>
+					   <div class='block' type='<%= map.map[i][j] %>'></div>
+					<% } %>
+				<% } %>
+			</div>
+		</div>
+		<script type="text/javascript" src='/webroot/js/APIs/jquery.js'></script>
+		<script type="text/javascript" src='/webroot/js/game/solve.js'></script>
+		<script type="text/javascript" src='/webroot/js/game/game.js'></script>
+	</body>
+</html>	

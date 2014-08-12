@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "register.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "webroot\\js\\coffee\\register\\register.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA,QAAQ,CAAC,IAAI,CAAC,SAAd,GAA0B,OAA1B,CAAA"
+}

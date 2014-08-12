@@ -1,0 +1,1 @@
+coffee -o webroot/js/ -cwmb webroot/js/coffee/
