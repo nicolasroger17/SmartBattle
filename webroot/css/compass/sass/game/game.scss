@@ -1,5 +1,8 @@
 @import "base";
 
+#gameboard{
+	position: relative;
+}
 .block{
 	height: 60px;
 	width: 60px;
@@ -18,5 +21,13 @@
 	background: #bbb;
 }
 .block[type='PATH']{
+	background: red;
+}
+
+.knight, .king{
+	position: absolute;
+	transition: all 0.3s linear;
+	height: 50px;
+	width: 20px;
 	background: red;
 }

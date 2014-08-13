@@ -1,31 +1,45 @@
 /* line 3, ../compass/sass/game/game.scss */
+#gameboard {
+  position: relative;
+}
+
+/* line 6, ../compass/sass/game/game.scss */
 .block {
   height: 60px;
   width: 60px;
   float: left;
 }
 
-/* line 8, ../compass/sass/game/game.scss */
+/* line 11, ../compass/sass/game/game.scss */
 .block[type='void'], .block[type='NULL'], .block[type='1'] {
   background: #eeeeee;
 }
 
-/* line 11, ../compass/sass/game/game.scss */
+/* line 14, ../compass/sass/game/game.scss */
 .block[type='obstacle'], .block[type='TRIED'], .block[type='0'] {
   background: #000000;
 }
 
-/* line 14, ../compass/sass/game/game.scss */
+/* line 17, ../compass/sass/game/game.scss */
 .block[type='start'] {
   background: #555;
 }
 
-/* line 17, ../compass/sass/game/game.scss */
+/* line 20, ../compass/sass/game/game.scss */
 .block[type='end'] {
   background: #bbb;
 }
 
-/* line 20, ../compass/sass/game/game.scss */
+/* line 23, ../compass/sass/game/game.scss */
 .block[type='PATH'] {
+  background: red;
+}
+
+/* line 27, ../compass/sass/game/game.scss */
+.knight, .king {
+  position: absolute;
+  transition: all 0.3s linear;
+  height: 50px;
+  width: 20px;
   background: red;
 }

@@ -8,5 +8,10 @@
 		["obstacle", "obstacle", "obstacle", "obstacle", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
 		["start", "void", "void", "void", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
 		["void", "void", "void", "void", "void", "void", "void", "void", "void"]
-	]
+	],
+	"monsters": [
+		["knight", "knight", "knight", "knight", "knight", "knight"],
+		["king", "king", "king", "king", "king", "king", "king", "king"]
+	],
+	"currentWave": 0
 }
