@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path');
 
 var chooseMap = function(req, res){
-	fs.readdir(path.resolve(__dirname, "../webroot/maps"), function(err, data){
+	fs.readdir(path.resolve(__dirname, "../webroot/ressources/maps"), function(err, data){
 		if(!err){
 			var names = Array();
 			for(var i = 0; i < files.length; i++){
@@ -17,7 +17,7 @@ var chooseMap = function(req, res){
 }
 
 var game = function(req, res){
-	fs.readFile(path.resolve(__dirname, "../webroot/maps/" + req.params.map + ".json"), function(err, data){
+	fs.readFile(path.resolve(__dirname, "../webroot/ressources/maps/" + req.params.map + ".json"), function(err, data){
 		if(!err){
 			res.render('game/game', {map: JSON.parse(data)});
 		}

@@ -36,10 +36,40 @@
 }
 
 /* line 27, ../compass/sass/game/game.scss */
-.knight, .king {
-  position: absolute;
-  transition: all 0.3s linear;
+.knight {
+  height: 40px;
+  width: 10px;
+  background: red;
+}
+
+/* line 32, ../compass/sass/game/game.scss */
+.king {
   height: 50px;
   width: 20px;
-  background: red;
+  background: blue;
+}
+
+/* line 37, ../compass/sass/game/game.scss */
+.monster {
+  position: absolute;
+  transition: all 0.6s linear;
+}
+
+/* line 42, ../compass/sass/game/game.scss */
+.tower {
+  position: absolute;
+  transition: all 0.2s linear;
+  height: 60px;
+  width: 60px;
+  background: url("/webroot/images/towers/classic.png");
+}
+
+/* line 50, ../compass/sass/game/game.scss */
+.bullet {
+  position: absolute;
+  transition: all 0.2s linear;
+  height: 3px;
+  width: 3px;
+  border-radius: 10px;
+  background: green;
 }
