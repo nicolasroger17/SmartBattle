@@ -2,7 +2,7 @@ var MAP_DATA;
 var MONSTERS_DATA;
 var TOWERS_DATA;
 var CASE_SIZE = 60;
-var DOCUMENT_SIZE = {};
+var BOARD_SIZE = {};
 
 var nbTowers = 0;
 var currentWave = 0;
@@ -41,8 +41,14 @@ function initializeGame(){
 			placeTower($(this));
 		});
 	});
-	DOCUMENT_SIZE.x = $(document).width();
-	DOCUMENT_SIZE.y = $(document).height();
+	defineGameBoundaries();
+}
+
+function defineGameBoundaries(){
+	BOARD_SIZE.x1 = $("#gameboard").position().left;
+	BOARD_SIZE.x2 = BOARD_SIZE.x1 + $("#gameboard").width();
+	BOARD_SIZE.y1 = $("#gameboard").position().top;
+	BOARD_SIZE.y2 = BOARD_SIZE.y1 + $("#gameboard").height();
 }
 
 function optimizePath(path){
@@ -97,7 +103,7 @@ function placeTower(element){
 	$("#gameboard").append(tower);
 	var t = $("#tower" + nbTowers);
 	var inter = setInterval(function(){
-		if($(".monster").length > 0){			
+		if($(".monster").length > 0){
 			t.pointat({target: "#" + t.nearest($(".monster"))[0].id});
 			fire(t);
 		}
@@ -107,30 +113,29 @@ function placeTower(element){
 
 var nbBullets = 0;
 function fire(element){
-	var move = 	moves(getRotation(element));
+	var trajectory = determineEquation(element, getRotation(element));
 	var pos = element.offset();
-	log(element.css("top"));
-	log(pos);
+
 	$("#gameboard").append("<div id='bullet" + nbBullets + "' class='bullet' style='top: " +
-		pos.top + "px; left: " + (pos.left + 30) + "px;'></div>");
+		trajectory.origin.y + "px; left: " + trajectory.origin.x + "px;'></div>");
 	var e = $("#bullet" + nbBullets);
+
+	var pointsIncr = 0;
 	var bInter = setInterval(function(){
 		destroyBulletIfOut(e, bInter);
-		e.css("top", e.css("top") + move.y);
-		e.css("left", e.css("left") + move.x);
-	}, 1000);
+		e.css("top", trajectory.getY(pointsIncr));
+		e.css("left", trajectory.getX(pointsIncr));
+		pointsIncr++;
+	}, 200);
 	nbBullets++;
 }
 
 function destroyBulletIfOut(bullet, inter){
-	//log(bullet);
 	var pos = bullet.position();
-	//log(pos);
-	if(pos.top <= 0 || pos.top > DOCUMENT_SIZE.y
-		|| pos.left < 0 || pos.left > DOCUMENT_SIZE.x){
+	if(pos.top <= BOARD_SIZE.y1 || pos.top > BOARD_SIZE.y2
+		|| pos.left < BOARD_SIZE.x1 || pos.left > BOARD_SIZE.x2){
 		bullet[0].remove();
 		clearInterval(inter);
-		//log(bullet[0].id + " destroyed");
 	}
 }
 
@@ -148,39 +153,39 @@ function getRotation(element){
 	return Math.round(Math.atan2(b, a) * (180/Math.PI));
 }
 
-function moves(rotation){
-	rotation = rotationTo360(rotation);
-    rotation = (Math.PI * rotation / 180);
-    var move = {x: 1, y: 1};
-    var h = Math.sqrt(2);
-    if(rotation <= 90){
-        move.x = h * ((180 * Math.sin(rotation)) / Math.PI);
-        move.y = -h * ((180 * Math.cos(rotation)) / Math.PI);
-    }
-    else if(rotation > 90 && rotation <= 180){
-        move.x = h * ((180 * Math.sin(rotation - 90)) / Math.PI);
-        move.y = h * ((180 * Math.cos(rotation - 90)) / Math.PI);
-    }
-    else if(rotation > 180 && rotation <= 270){
-        move.x = -h * ((180 * Math.sin(rotation - 180)) / Math.PI);
-        move.y = h * ((180 * Math.cos(rotation - 180)) / Math.PI);
-    }
-    else if(rotation > 270){
-        move.x = -h * ((180 * Math.sin(270 - rotation)) / Math.PI);
-        move.y = -h * ((180 * Math.cos(270 - rotation)) / Math.PI);
-    }
-    move.x /= 10;
-    move.y /= 10;
-    log(move);
-    return move;
-}
+function determineEquation(element, angle){
+	var x1 = parseInt(element.css("left").replace("px", "")) + 30;
+	var y1 = parseInt(element.css("top").replace("px", "")) + 30;
+	var x2 = (CASE_SIZE / 2);
+	var y2 = (CASE_SIZE / 2);
 
-function rotationTo360(rot){
-	if(rot < 0)
-		rot += 360;
-	return rot;
-}
+	if(angle < 0)
+		angle += 360;
 
-function log(m){
-	console.log(m);
+	if(angle >= 0 && angle <= 90){
+		x2 *= Math.cos((90 - angle) * (Math.PI/180));
+		y2 *= - Math.sin((90 - angle) * (Math.PI/180));
+	}
+	else if(angle > 90 && angle <= 180){
+		x2 *= Math.sin((180 - angle) * (Math.PI/180));
+		y2 *= Math.cos((180 - angle) * (Math.PI/180));
+	}
+	else if(angle > 180 && angle <= 270){
+		x2 *= - Math.cos((270 - angle) * (Math.PI/180));
+		y2 *= Math.sin((270 - angle) * (Math.PI/180));
+	}
+	else if(angle > 270 && angle <= 360){
+		x2 *= - Math.sin((360 - angle) * (Math.PI/180));
+		y2 *= - Math.cos((360 - angle) * (Math.PI/180));
+	}
+
+	return {
+			origin : {x: (x1 + x2), y: (y1 + y2)},
+			getX: function(incr){
+				return (x1 + x2) + (incr * x2);
+			},
+			getY: function(incr){
+				return (y1 + y2) + (incr * y2);
+			}
+		}
 }
