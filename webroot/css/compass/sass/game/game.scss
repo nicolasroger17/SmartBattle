@@ -24,19 +24,19 @@
 	background: red;
 }
 
-.knight{
+.monster{
+	position: absolute;
+	transition: all 0.6s linear;
+}
+.monster[type='knight']{
 	height: 40px;
 	width: 10px;
 	background: red;
 }
-.king{
+.monster[type='king']{
 	height: 50px;
 	width: 20px;
 	background: blue;
-}
-.monster{
-	position: absolute;
-	transition: all 0.6s linear;
 }
 
 .tower{

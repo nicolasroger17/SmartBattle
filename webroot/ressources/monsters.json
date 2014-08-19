@@ -3,7 +3,7 @@
 
 		"height": 40,
 		"width": 10,
-		"hp": 30
+		"health": 30
 
 	},
 
@@ -11,7 +11,7 @@
 
 		"height": 50,
 		"width": 20,
-		"hp": 50
+		"health": 50
 
 	}
 	

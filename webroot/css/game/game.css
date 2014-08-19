@@ -36,23 +36,23 @@
 }
 
 /* line 27, ../compass/sass/game/game.scss */
-.knight {
+.monster {
+  position: absolute;
+  transition: all 0.6s linear;
+}
+
+/* line 31, ../compass/sass/game/game.scss */
+.monster[type='knight'] {
   height: 40px;
   width: 10px;
   background: red;
 }
 
-/* line 32, ../compass/sass/game/game.scss */
-.king {
+/* line 36, ../compass/sass/game/game.scss */
+.monster[type='king'] {
   height: 50px;
   width: 20px;
   background: blue;
-}
-
-/* line 37, ../compass/sass/game/game.scss */
-.monster {
-  position: absolute;
-  transition: all 0.6s linear;
 }
 
 /* line 42, ../compass/sass/game/game.scss */
