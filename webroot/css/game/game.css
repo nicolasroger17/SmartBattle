@@ -11,12 +11,12 @@
 }
 
 /* line 11, ../compass/sass/game/game.scss */
-.block[type='void'], .block[type='NULL'], .block[type='1'] {
+.block[type='void'] {
   background: #eeeeee;
 }
 
 /* line 14, ../compass/sass/game/game.scss */
-.block[type='obstacle'], .block[type='TRIED'], .block[type='0'] {
+.block[type='wall'] {
   background: #000000;
 }
 

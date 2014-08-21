@@ -8,10 +8,10 @@
 	width: 60px;
 	float: left;
 }
-.block[type='void'], .block[type='NULL'], .block[type='1']{
+.block[type='void']{
 	background: #eeeeee;
 }
-.block[type='obstacle'], .block[type='TRIED'], .block[type='0']{
+.block[type='wall']{
 	background: #000000;
 }
 .block[type='start']{

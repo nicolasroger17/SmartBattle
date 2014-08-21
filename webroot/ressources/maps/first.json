@@ -4,9 +4,9 @@
 	"width": 9,
 	"map": [
 		["void", "void", "void", "void", "void", "void", "void", "void", "void"],
-		["obstacle", "obstacle", "obstacle", "obstacle", "void", "void", "void", "void", "end"],
-		["obstacle", "obstacle", "obstacle", "obstacle", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
-		["start", "void", "void", "void", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
+		["wall", "wall", "wall", "wall", "void", "void", "void", "void", "end"],
+		["wall", "wall", "wall", "wall", "void", "wall", "wall", "wall", "wall"],
+		["start", "void", "void", "void", "void", "wall", "wall", "wall", "wall"],
 		["void", "void", "void", "void", "void", "void", "void", "void", "void"]
 	],
 	"monsters": [

@@ -1,13 +1,14 @@
 {
-	"name": "first",
-	"height": 5,
-	"width": 9,
+	"name": "second",
+	"height": 6,
+	"width": 14,
 	"map": [
-		["void", "void", "void", "void", "void", "void", "void", "void", "void"],
-		["obstacle", "obstacle", "obstacle", "obstacle", "void", "void", "void", "void", "end"],
-		["obstacle", "obstacle", "obstacle", "obstacle", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
-		["start", "void", "void", "void", "void", "obstacle", "obstacle", "obstacle", "obstacle"],
-		["void", "void", "void", "void", "void", "void", "void", "void", "void"]
+		["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"],
+		["start", "wall", "void", "void", "void", "wall", "void", "void", "void", "wall", "void", "void", "void", "void"],
+		["void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "void"],
+		["void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "wall", "void", "void"],
+		["void", "void", "void", "wall", "void", "void", "void", "wall", "void", "void", "void", "wall", "void", "end"],
+		["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
 	],
 	"monsters": [
 		["knight", "king", "knight", "knight", "knight", "knight"],

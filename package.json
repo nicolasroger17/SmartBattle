@@ -1,0 +1,29 @@
+{
+  "name": "smartBattle",
+  "version": "0.0.2",
+  "description": "tower defense",
+  "main": "app.js",
+  "dependencies": {
+    "ejs": "^1.0.0",
+    "ent": "^0.1.0",
+    "express": "^3.4.8",
+    "connect-url-rewrite": "^0.1.0",
+    "mysql": "^2.2.0",
+    "nodemailer": "^0.6.5",
+    "orm": "^2.1.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicolasroger17/smartBattle.git"
+  },
+  "author": "Nicolas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicolasroger17/smartBattle/issues"
+  },
+  "homepage": "https://github.com/nicolasroger17/smartBattle"
+}

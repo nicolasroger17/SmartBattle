@@ -1,6 +1,6 @@
 var config = {
 	default: {
-		database : "attack",
+		database : "smartBattle",
 		protocol : "mysql",
 		host     : "127.0.0.1",
 		port     : 3306,         // optional, defaults to database default
@@ -13,7 +13,7 @@ var config = {
 		}
 	},
 	local: {
-		database : "attack",
+		database : "smartBattle",
 		protocol : "mysql",
 		host     : "127.0.0.1",
 		port     : 3306,         // optional, defaults to database default

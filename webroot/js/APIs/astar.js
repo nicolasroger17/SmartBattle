@@ -63,7 +63,7 @@ var astar = {
                 if(map[i][j] == "void"){
                     map[i][j] = 1;
                 }
-                else if(map[i][j] == "obstacle"){
+                else if(map[i][j] == "wall"){
                     map[i][j] = 0;
                 }
                 else if(map[i][j] == "start"){

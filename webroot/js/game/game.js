@@ -16,7 +16,7 @@ var currentWave = 0;
 
 $(document).ready(function(){
     $.ajax({
-        url: "/webroot/ressources/maps/first.json",
+        url: "/webroot/ressources/maps/" + getMapName() + ".json",
         success: function (data) {
         	MAP_DATA = data;
         	initializeGame();
@@ -36,6 +36,10 @@ $(document).ready(function(){
     });
 });
 
+function getMapName(){
+	return window.location.pathname.replace("/game/", "");
+}
+
 function initializeGame(){
 	var path = astar.entry(MAP_DATA.map);
 	optimizePath(path);
@@ -43,7 +47,7 @@ function initializeGame(){
 	$("#start").click(function(){
 		startWave();
 	});
-	$(".block[type='obstacle']").each(function(){
+	$(".block[type='wall']").each(function(){
 		$(this).click(function(){
 			placeTower($(this));
 		});
@@ -52,10 +56,10 @@ function initializeGame(){
 }
 
 function defineGameBoundaries(){
-	BOARD_SIZE.x1 = $("#gameboard").position().left;
-	BOARD_SIZE.x2 = BOARD_SIZE.x1 + $("#gameboard").width();
-	BOARD_SIZE.y1 = $("#gameboard").position().top;
-	BOARD_SIZE.y2 = BOARD_SIZE.y1 + $("#gameboard").height();
+	BOARD_SIZE.x1 = 0;
+	BOARD_SIZE.x2 = $("#gameboard").width();
+	BOARD_SIZE.y1 = 0;
+	BOARD_SIZE.y2 = $("#gameboard").height();
 }
 
 function optimizePath(path){
@@ -82,6 +86,7 @@ function startWave(){
 
 		if(monsterNb == MAP_DATA.monsters[currentWave].length){
 			currentWave++;
+			monsterNb = 0;
 			clearInterval(wave);
 		}
 	}, 1000);
@@ -149,7 +154,7 @@ function fire(element){
 
 function checkIfBulletIsOut(id){
 	var pos = bullets[id].element.position();
-	if(pos.top <= BOARD_SIZE.y1 || pos.top > BOARD_SIZE.y2
+	if(pos.top < BOARD_SIZE.y1 || pos.top > BOARD_SIZE.y2
 		|| pos.left < BOARD_SIZE.x1 || pos.left > BOARD_SIZE.x2){
 		destroyBullet(bullets[id]);
 	}
@@ -194,6 +199,12 @@ function determineEquation(element, angle){
 		x2 *= - Math.sin((360 - angle) * (Math.PI/180));
 		y2 *= - Math.cos((360 - angle) * (Math.PI/180));
 	}
+
+
+	/*console.log(angle);
+	console.log("x1 : " + x1 + " x2 : " + x2 + " y1 : " + y1 + " y2 : " + y2);
+	console.log("getX : " + (x1 + x2) + (" + incr * " + (x2 * 2)));
+	console.log("");*/
 
 	return {
 		origin : {x: (x1 + x2), y: (y1 + y2)},
