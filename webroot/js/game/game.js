@@ -1,16 +1,8 @@
-var MAP_DATA;
-var MONSTERS_DATA;
-var TOWERS_DATA;
-var CASE_SIZE = 60;
-var BOARD_SIZE = {};
+var MAP_DATA, MONSTERS_DATA, TOWERS_DATA, CASE_SIZE = 60, BOARD_SIZE = {};
 
-var towers = {};
-var monsters = {};
-var bullets = {};
+var towers = {}, monsters = {}, bullets = {};
 
-var towerNb = 0;
-var monsterNb = 0;
-var bulletNb = 0;
+var towerNb = 0, monsterNb = 0, bulletNb = 0;
 
 var currentWave = 0;
 
@@ -36,10 +28,17 @@ $(document).ready(function(){
     });
 });
 
+/**
+* Parse the url to get the map name
+**/
 function getMapName(){
 	return window.location.pathname.replace("/game/", "");
 }
 
+/**
+* Define the best path for the map
+* sets the listener on the buttons
+**/
 function initializeGame(){
 	var path = astar.entry(MAP_DATA.map);
 	optimizePath(path);
@@ -55,6 +54,10 @@ function initializeGame(){
 	defineGameBoundaries();
 }
 
+/**
+* Define the game boundaries
+* to check if a bullet is out
+**/
 function defineGameBoundaries(){
 	BOARD_SIZE.x1 = 0;
 	BOARD_SIZE.x2 = $("#gameboard").width();
@@ -62,7 +65,13 @@ function defineGameBoundaries(){
 	BOARD_SIZE.y2 = $("#gameboard").height();
 }
 
+/**
+* Calculate the parameters left and top
+* for each position from the size of the case
+* and the starting point
+**/
 function optimizePath(path){
+	console.log(path);
 	MAP_DATA.path = Array();
 	MAP_DATA.path.push({x: path[0].x * CASE_SIZE, y: path[0].y * CASE_SIZE});
 
@@ -71,6 +80,9 @@ function optimizePath(path){
 	}
 }
 
+/**
+* Start the wave by creating releasing the monsters
+**/
 function startWave(){
 	updateImpact();
 	var wave = setInterval(function(){
@@ -92,6 +104,10 @@ function startWave(){
 	}, 1000);
 }
 
+/**
+* Make the monster move and add it
+* to monsters list
+**/
 function moveMonster(type, id){
 	var pos = 1;
 	var e = $("#" + id);
@@ -113,7 +129,11 @@ function moveMonster(type, id){
 	monsters[id] = {element: e, id: id, health: MONSTERS_DATA[type].health, interval: move};
 }
 
-var towerInter = Array();
+/**
+* Create a tower at the desired location
+* make it search for the nearest enemy
+* and fire at it
+**/
 function placeTower(element){
 	var pos = element.position();
 	var id = "tower" + towerNb;
@@ -132,6 +152,12 @@ function placeTower(element){
 	towers[id] = {element: t, id: id, interval: inter};
 }
 
+/**
+* For each bullet, determine the equation
+* to have a straight line
+* make the bullet move and destroy it
+* if it is out of the boundaries
+**/
 function fire(element){
 	var trajectory = determineEquation(element, getRotation(element));
 	var pos = element.offset();
@@ -152,14 +178,25 @@ function fire(element){
 	bullets[id] = {element: e, id: id, interval: bInter, damage: 10};
 }
 
+/**
+* Check if a bullet is not
+* inside the gameboard
+* and destroy it if it is the case
+**/
 function checkIfBulletIsOut(id){
 	var pos = bullets[id].element.position();
-	if(pos.top < BOARD_SIZE.y1 || pos.top > BOARD_SIZE.y2
-		|| pos.left < BOARD_SIZE.x1 || pos.left > BOARD_SIZE.x2){
+	if(pos.top < BOARD_SIZE.y1
+		|| pos.top > BOARD_SIZE.y2
+		|| pos.left < BOARD_SIZE.x1
+		|| pos.left > BOARD_SIZE.x2){
 		destroyBullet(bullets[id]);
 	}
 }
 
+/**
+* Convert the rotation matrix
+* into a rotation in degree
+**/
 function getRotation(element){
 	var tr = element.css("transform");
 	var values = tr.split('(')[1];
@@ -174,6 +211,11 @@ function getRotation(element){
 	return Math.round(Math.atan2(b, a) * (180/Math.PI));
 }
 
+/**
+* Find the equation of the line
+* for a bullet from the angle of the turret
+* and its position
+**/
 function determineEquation(element, angle){
 	var x1 = parseInt(element.css("left").replace("px", "")) + 30;
 	var y1 = parseInt(element.css("top").replace("px", "")) + 30;
@@ -200,12 +242,6 @@ function determineEquation(element, angle){
 		y2 *= - Math.cos((360 - angle) * (Math.PI/180));
 	}
 
-
-	/*console.log(angle);
-	console.log("x1 : " + x1 + " x2 : " + x2 + " y1 : " + y1 + " y2 : " + y2);
-	console.log("getX : " + (x1 + x2) + (" + incr * " + (x2 * 2)));
-	console.log("");*/
-
 	return {
 		origin : {x: (x1 + x2), y: (y1 + y2)},
 		getX: function(incr){
@@ -218,6 +254,11 @@ function determineEquation(element, angle){
 }
 
 var checkCollisions;
+
+/**
+* Update the position of the moving elements
+* and check if there are collision
+**/
 function updateImpact(){
 	checkCollisions = setInterval(function(){
 		updateMonsterPosition();
@@ -226,7 +267,9 @@ function updateImpact(){
 	}, 10);
 }
 
-var monstersPosition = Array();
+/**
+* Update the position of the monsters
+**/
 function updateMonsterPosition(){
 	$(".monster").each(function(){
 		var p = $(this).offset();
@@ -237,7 +280,9 @@ function updateMonsterPosition(){
 	});
 }
 
-var bulletsPosition = Array();
+/**
+* Update the position of the bullets
+**/
 function updateBulletPosition(){
 	$(".bullet").each(function(){
 		var p = $(this).offset();
@@ -246,6 +291,12 @@ function updateBulletPosition(){
 	});
 }
 
+/**
+* Check if there is a collision
+* between a monster and a bullet
+* if so, destroy the bullet and
+* lower the life of the monster
+**/
 function checkCollision(){
 	for (mKey in monsters) {
         for (bKey in bullets) {
@@ -261,6 +312,11 @@ function checkCollision(){
     }
 }
 
+/**
+* Remove the bullet from the DOM
+* clear the interval that make it moves
+* and remove it from the bullets list
+**/
 function destroyBullet(bullet){
 	bullet.element.remove();
 	clearInterval(bullet.interval);
@@ -268,6 +324,10 @@ function destroyBullet(bullet){
 	
 }
 
+/**
+* Lower the life of a monster
+* by the damages of the turret
+**/
 function lowerHealth(monster, damage){
 	monster.health -= damage;
 	if(monster.health <= 0){
@@ -275,12 +335,20 @@ function lowerHealth(monster, damage){
 	}
 }
 
+/**
+* Remove the monster from the DOM
+* clear the interval that make it moves
+* and remove it from the monsters list
+**/
 function destroyMonster(monster){
 	monster.element.remove();
 	clearInterval(monster.interval);
 	delete monsters[monster.id];	
 }
 
+/**
+* Give the size of a json array
+**/
 Object.size = function(obj) {
     var size = 0, key;
     for (key in obj) {
