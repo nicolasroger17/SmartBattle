@@ -8,6 +8,10 @@ var towers = {};
 var monsters = {};
 var bullets = {};
 
+var towerNb = 0;
+var monsterNb = 0;
+var bulletNb = 0;
+
 var currentWave = 0;
 
 $(document).ready(function(){
@@ -66,24 +70,28 @@ function optimizePath(path){
 function startWave(){
 	updateImpact();
 	var wave = setInterval(function(){
-		var type = MAP_DATA.monsters[currentWave][Object.size(monsters)];
+		var id = "monster" + monsterNb;
+		var type = MAP_DATA.monsters[currentWave][monsterNb];
+		monsterNb++;
+
 		var top = MAP_DATA.path[0].x + ((CASE_SIZE - MONSTERS_DATA[type].height) / 2);
 		var left = MAP_DATA.path[0].y + ((CASE_SIZE - MONSTERS_DATA[type].width) / 2);
-		$("#gameboard").append("<div id='monster" + Object.size(monsters) + "' class='monster' type='" + type + 
+		$("#gameboard").append("<div id='" + id + "' class='monster' type='" + type + 
 			"' style='top: " + top + "px; left: " + left + "px;'></div>");
-		moveMonster(type);
+		moveMonster(type, id);
 
-		if(Object.size(monsters) == MAP_DATA.monsters[currentWave].length){
+		if(monsterNb == MAP_DATA.monsters[currentWave].length){
 			currentWave++;
 			clearInterval(wave);
 		}
 	}, 1000);
 }
 
-function moveMonster(type){
+function moveMonster(type, id){
 	var pos = 1;
-	var e = $("#monster" + Object.size(monsters));
-	var move = setInterval(function(){		
+	var e = $("#" + id);
+
+	var move = setInterval(function(){
 		var newTop = parseInt(e.css("top")) + MAP_DATA.path[pos].x;
 		var newLeft = parseInt(e.css("left")) + MAP_DATA.path[pos].y;
 		e.css("top", newTop);
@@ -97,15 +105,18 @@ function moveMonster(type){
 			clearInterval(move);
 		}
 	}, 600);
-	monsters[e[0].id] = {element: e, health: MONSTERS_DATA[type].health, interval: move};
+	monsters[id] = {element: e, id: id, health: MONSTERS_DATA[type].health, interval: move};
 }
 
 var towerInter = Array();
 function placeTower(element){
 	var pos = element.position();
-	var tower = "<div class='tower' id='tower" + Object.size(towers) + "' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
+	var id = "tower" + towerNb;
+	towerNb++;
+
+	var tower = "<div class='tower' id='" + id + "' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
 	$("#gameboard").append(tower);
-	var t = $("#tower" + Object.size(towers));
+	var t = $("#" + id);
 
 	var inter = setInterval(function(){
 		if($(".monster").length > 0){
@@ -113,25 +124,27 @@ function placeTower(element){
 			fire(t);
 		}
 	}, 200);
-	towers[t[0].id] = {element: t, interval: inter};
+	towers[id] = {element: t, id: id, interval: inter};
 }
 
 function fire(element){
 	var trajectory = determineEquation(element, getRotation(element));
 	var pos = element.offset();
+	var id = "bullet" + bulletNb;
+	bulletNb++;
 
-	$("#gameboard").append("<div id='bullet" + Object.size(bullets) + "' class='bullet' style='top: " +
+	$("#gameboard").append("<div id='" + id + "' class='bullet' style='top: " +
 		trajectory.origin.y + "px; left: " + trajectory.origin.x + "px;'></div>");
-	var e = $("#bullet" + Object.size(bullets));
+	var e = $("#" + id);
 
 	var pointsIncr = 1;
 	var bInter = setInterval(function(){
-		checkIfBulletIsOut(e[0].id, bInter);
+		checkIfBulletIsOut(id);
 		e.css("top", trajectory.getY(pointsIncr));
 		e.css("left", trajectory.getX(pointsIncr));
 		pointsIncr++;
 	}, 200);
-	bullets[e[0].id] = {element: e, interval: bInter, damage: 10};
+	bullets[id] = {element: e, id: id, interval: bInter, damage: 10};
 }
 
 function checkIfBulletIsOut(id){
@@ -225,11 +238,8 @@ function updateBulletPosition(){
 function checkCollision(){
 	for (mKey in monsters) {
         for (bKey in bullets) {
-        	//console.log("");
-			//console.log(bullets[bKey]);
-			//console.log(monsters[mKey]);
-			//console.log("");
-	        if(bullets[bKey].x >= monsters[mKey].x1
+	        if(monsters[mKey]
+	        	&& bullets[bKey].x >= monsters[mKey].x1
 				&& bullets[bKey].x <= monsters[mKey].x2
 				&& bullets[bKey].y >= monsters[mKey].y1
 				&& bullets[bKey].y <= monsters[mKey].y2){
