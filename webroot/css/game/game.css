@@ -1,61 +1,115 @@
 /* line 3, ../compass/sass/game/game.scss */
-#gameboard {
+#title {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+/* line 7, ../compass/sass/game/game.scss */
+.gameContainer {
+  margin: auto;
+}
+
+/* line 10, ../compass/sass/game/game.scss */
+.infos {
+  line-height: 40px;
+  height: 40px;
   position: relative;
 }
 
-/* line 6, ../compass/sass/game/game.scss */
+/* line 15, ../compass/sass/game/game.scss */
+.infos div {
+  line-height: inherit;
+}
+
+/* line 18, ../compass/sass/game/game.scss */
+.infos_left {
+  float: left;
+}
+
+/* line 22, ../compass/sass/game/game.scss */
+.infos_left + .infos_left {
+  margin-left: 10px;
+}
+
+/* line 25, ../compass/sass/game/game.scss */
+.infos_center {
+  text-align: center;
+  margin-left: -10px;
+}
+
+/* line 29, ../compass/sass/game/game.scss */
+.infos_right {
+  float: right;
+}
+
+/* line 32, ../compass/sass/game/game.scss */
+.weapons {
+  height: 60px;
+}
+
+/* line 35, ../compass/sass/game/game.scss */
+#gameboard {
+  clear: both;
+  position: relative;
+}
+
+/* line 39, ../compass/sass/game/game.scss */
 .block {
   height: 60px;
   width: 60px;
   float: left;
 }
 
-/* line 11, ../compass/sass/game/game.scss */
+/* line 44, ../compass/sass/game/game.scss */
 .block[type='void'] {
   background: #eeeeee;
+  background-image: url("/webroot/images/textures/grass.png");
+  background-size: 60px;
 }
 
-/* line 14, ../compass/sass/game/game.scss */
+/* line 49, ../compass/sass/game/game.scss */
 .block[type='wall'] {
   background: #000000;
+  background-image: url("/webroot/images/textures/pin.png");
+  background-size: 60px;
 }
 
-/* line 17, ../compass/sass/game/game.scss */
+/* line 54, ../compass/sass/game/game.scss */
 .block[type='start'] {
   background: #555;
 }
 
-/* line 20, ../compass/sass/game/game.scss */
+/* line 57, ../compass/sass/game/game.scss */
 .block[type='end'] {
   background: #bbb;
 }
 
-/* line 23, ../compass/sass/game/game.scss */
+/* line 60, ../compass/sass/game/game.scss */
 .block[type='PATH'] {
   background: red;
 }
 
-/* line 27, ../compass/sass/game/game.scss */
+/* line 64, ../compass/sass/game/game.scss */
 .monster {
   position: absolute;
   transition: all 0.6s linear;
 }
 
-/* line 31, ../compass/sass/game/game.scss */
+/* line 68, ../compass/sass/game/game.scss */
 .monster[type='knight'] {
   height: 40px;
   width: 10px;
   background: red;
 }
 
-/* line 36, ../compass/sass/game/game.scss */
+/* line 73, ../compass/sass/game/game.scss */
 .monster[type='king'] {
   height: 50px;
   width: 20px;
   background: blue;
 }
 
-/* line 42, ../compass/sass/game/game.scss */
+/* line 79, ../compass/sass/game/game.scss */
 .tower {
   position: absolute;
   transition: all 0.2s linear;
@@ -64,7 +118,7 @@
   background: url("/webroot/images/towers/classic.png");
 }
 
-/* line 50, ../compass/sass/game/game.scss */
+/* line 87, ../compass/sass/game/game.scss */
 .bullet {
   position: absolute;
   transition: all 0.2s linear;

@@ -1,6 +1,39 @@
 @import "base";
 
+#title{
+	text-align: center;
+	text-transform: capitalize;
+}
+.gameContainer{
+	margin: auto;
+}
+.infos{
+	line-height: 40px;
+	height: 40px;
+	position: relative;
+}
+.infos div{
+	line-height: inherit;
+}
+.infos_left{
+	float: left;
+}
+$space: 10px;
+.infos_left + .infos_left{
+	margin-left: $space;
+}
+.infos_center{
+	text-align: center;
+	margin-left: -$space;
+}
+.infos_right{
+	float: right;
+}
+.weapons{
+	height: 60px;
+}
 #gameboard{
+	clear: both;
 	position: relative;
 }
 .block{
@@ -10,9 +43,13 @@
 }
 .block[type='void']{
 	background: #eeeeee;
+	background-image: url("/webroot/images/textures/grass.png");
+	background-size: 60px;
 }
 .block[type='wall']{
 	background: #000000;
+	background-image: url("/webroot/images/textures/pin.png");
+	background-size: 60px;
 }
 .block[type='start']{
 	background: #555;

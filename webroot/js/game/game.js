@@ -71,7 +71,6 @@ function defineGameBoundaries(){
 * and the starting point
 **/
 function optimizePath(path){
-	console.log(path);
 	MAP_DATA.path = Array();
 	MAP_DATA.path.push({x: path[0].x * CASE_SIZE, y: path[0].y * CASE_SIZE});
 
@@ -87,7 +86,7 @@ function startWave(){
 	updateImpact();
 	var wave = setInterval(function(){
 		var id = "monster" + monsterNb;
-		var type = MAP_DATA.monsters[currentWave][monsterNb];
+		var type = MAP_DATA.waves[currentWave][monsterNb];
 		monsterNb++;
 
 		var top = MAP_DATA.path[0].x + ((CASE_SIZE - MONSTERS_DATA[type].height) / 2);
@@ -96,7 +95,7 @@ function startWave(){
 			"' style='top: " + top + "px; left: " + left + "px;'></div>");
 		moveMonster(type, id);
 
-		if(monsterNb == MAP_DATA.monsters[currentWave].length){
+		if(monsterNb == MAP_DATA.waves[currentWave].length){
 			currentWave++;
 			monsterNb = 0;
 			clearInterval(wave);
@@ -150,6 +149,10 @@ function placeTower(element){
 		}
 	}, 200);
 	towers[id] = {element: t, id: id, interval: inter};
+}
+
+function fireInterval(){
+
 }
 
 /**

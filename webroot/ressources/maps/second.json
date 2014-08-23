@@ -1,5 +1,7 @@
 {
 	"name": "second",
+	"gold": 160,
+	"lives": 10,
 	"height": 6,
 	"width": 14,
 	"map": [
@@ -10,7 +12,7 @@
 		["void", "void", "void", "wall", "void", "void", "void", "wall", "void", "void", "void", "wall", "void", "end"],
 		["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
 	],
-	"monsters": [
+	"waves": [
 		["knight", "king", "knight", "knight", "knight", "knight"],
 		["king", "king", "king", "king", "king", "king", "king", "king"]
 	]

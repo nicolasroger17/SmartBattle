@@ -1,18 +1,30 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Game - <%= map.name %></title>
+		<title><%= map.name %></title>
 		<link rel="stylesheet" type="text/css" href="/webroot/css/game/game.css">
 	</head>
 	<body>
 		<div class='container'>
-			<h1>Game - <%= map.name %></h1>
-			<div id='gameboard' style='height:<%= map.height * 60 %>px; width: <%= map.width * 60 %>px;'>
-				<% for(var i = 0; i < map.map.length; i++) {%>
-					<% for(var j = 0; j < map.map[i].length; j++) {%>
-					   <div class='block' type='<%= map.map[i][j] %>'></div>
+			<h1 id="title"><%= map.name %></h1>
+			<div class='gameContainer' style='width: <%= map.width * 60 %>px;'>
+				<div class='infos' style='width: <%= map.width * 60 %>px;'>
+					<div class='infos_left'>Gold <span id='gold'><%= map.gold %></span></div>
+					<div class='infos_left'>Lives <span id='life'><%= map.lives %></span></div>
+					<div class='infos_right'>Wave <span id='wave'>0/<%= map.waves.length %></span></div>
+					<div class='infos_center'>Score <span id='score'>0</span></div>					
+				</div>
+				<div id='gameboard' style='height:<%= map.height * 60 %>px; width: <%= map.width * 60 %>px;'>
+					<% for(var i = 0; i < map.map.length; i++) {%>
+						<% for(var j = 0; j < map.map[i].length; j++) {%>
+						   <div class='block' type='<%= map.map[i][j] %>'></div>
+						<% } %>
 					<% } %>
-				<% } %>
+				</div>
+				<div class='weapons' style='width: <%= map.width * 60 %>px;'>
+					<div class='tower'></div>
+					<div class='tower'></div>				
+				</div>
 			</div>
 			<input id='start' type='button' value='start'>
 		</div>
