@@ -77,39 +77,43 @@
 /* line 54, ../compass/sass/game/game.scss */
 .block[type='start'] {
   background: #555;
+  background-image: url("/webroot/images/textures/web.png");
+  background-size: 60px;
 }
 
-/* line 57, ../compass/sass/game/game.scss */
+/* line 59, ../compass/sass/game/game.scss */
 .block[type='end'] {
   background: #bbb;
+  background-image: url("/webroot/images/textures/anthill.png");
+  background-size: 60px;
 }
 
-/* line 60, ../compass/sass/game/game.scss */
+/* line 64, ../compass/sass/game/game.scss */
 .block[type='PATH'] {
   background: red;
 }
 
-/* line 64, ../compass/sass/game/game.scss */
+/* line 68, ../compass/sass/game/game.scss */
 .monster {
   position: absolute;
   transition: all 0.6s linear;
 }
 
-/* line 68, ../compass/sass/game/game.scss */
+/* line 72, ../compass/sass/game/game.scss */
 .monster[type='knight'] {
   height: 40px;
   width: 10px;
   background: red;
 }
 
-/* line 73, ../compass/sass/game/game.scss */
+/* line 77, ../compass/sass/game/game.scss */
 .monster[type='king'] {
   height: 50px;
   width: 20px;
   background: blue;
 }
 
-/* line 79, ../compass/sass/game/game.scss */
+/* line 83, ../compass/sass/game/game.scss */
 .tower {
   position: absolute;
   transition: all 0.2s linear;
@@ -118,7 +122,7 @@
   background: url("/webroot/images/towers/classic.png");
 }
 
-/* line 87, ../compass/sass/game/game.scss */
+/* line 91, ../compass/sass/game/game.scss */
 .bullet {
   position: absolute;
   transition: all 0.2s linear;

@@ -53,9 +53,13 @@ $space: 10px;
 }
 .block[type='start']{
 	background: #555;
+	background-image: url("/webroot/images/textures/web.png");
+	background-size: 60px;
 }
 .block[type='end']{
 	background: #bbb;
+	background-image: url("/webroot/images/textures/anthill.png");
+	background-size: 60px;
 }
 .block[type='PATH']{
 	background: red;
