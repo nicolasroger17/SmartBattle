@@ -168,12 +168,13 @@ function fire(element){
 	bulletNb++;
 
 	$("#gameboard").append("<div id='" + id + "' class='bullet' style='top: " +
-		trajectory.origin.y + "px; left: " + trajectory.origin.x + "px;'></div>");
+		trajectory.getY(0) + "px; left: " + trajectory.getX(0) + "px;'></div>");
 	var e = $("#" + id);
 
 	var pointsIncr = 1;
 	var bInter = setInterval(function(){
-		checkIfBulletIsOut(id);
+		e.css("opacity", 1);
+		checkIfBulletIsOut(id);	
 		e.css("top", trajectory.getY(pointsIncr));
 		e.css("left", trajectory.getX(pointsIncr));
 		pointsIncr++;
@@ -220,8 +221,8 @@ function getRotation(element){
 * and its position
 **/
 function determineEquation(element, angle){
-	var x1 = parseInt(element.css("left").replace("px", "")) + 30;
-	var y1 = parseInt(element.css("top").replace("px", "")) + 30;
+	var x1 = parseInt(element.css("left").replace("px", "")) + 30 - 2;
+	var y1 = parseInt(element.css("top").replace("px", "")) + 30 - 2;
 	var x2 = (CASE_SIZE / 2);
 	var y2 = (CASE_SIZE / 2);
 
