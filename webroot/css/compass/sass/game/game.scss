@@ -88,6 +88,13 @@ $space: 10px;
 	background: url('/webroot/images/towers/classic.png');
 }
 
+.range{
+	border-radius: 50%;
+	position: absolute;
+	background: #0000aa;
+	opacity: 0.2;
+}
+
 .bullet{
 	position: absolute;	
 	height: 4px;

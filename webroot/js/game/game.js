@@ -141,9 +141,10 @@ function placeTower(element){
 	var tower = "<div class='tower' id='" + id + "' type='minigun' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
 	$("#gameboard").append(tower);
 	var t = $("#" + id);
+	rangeShower(t);
 
-	var target;
-	var inter = setInterval(function(){
+	var target,
+		inter = setInterval(function(){
 		if($(".monster").length > 0){
 			var nearest = "#" + t.nearest($(".monster")).attr("id");
 			if(!target || !monsters[target.substring(1, target.length)] || !isInRange(t, target)){
@@ -159,23 +160,39 @@ function placeTower(element){
 	towers[id] = {element: t, id: id, interval: inter};
 }
 
+function rangeShower(tower){
+	var range = TOWERS_DATA[tower.attr("type")].range,
+		size = 30 - range;
+		
+	tower.hover(
+		function(){
+			tower.append("<div id='range" + tower.attr("id") + "' " +
+			"class='range'" +
+			"style='height: " + (range * 2) + "px; width: " + (range * 2) + "px; " + 
+			"left: " + size + "px; top : " + size + "px;'" +
+			"'></div>");
+		},
+		function(){
+			$("#range" + tower.attr("id")).remove();
+		}
+	);
+}
+
 /**
 * check if the nearest side of a monster
 * is in range of the tower
 **/
 function isInRange(element, nearest){
 	nearest = $(nearest);
-	var eLeft = element.css("left"), eTop = element.css("top"),
-		mLeft = nearest.css("left"), mTop = nearest.css("top"),
-		t = {}, m = {};
+	var t = {}, m = {};
 
-	t.x = parseInt(eLeft.substring(0, eLeft.length - 2)) + 30;
-	t.y = parseInt(eTop.substring(0, eTop.length - 2)) + 30;
+	t.x = parseInt(element.css("left")) + 30;
+	t.y = parseInt(element.css("top")) + 30;
 	t.range = TOWERS_DATA[element.attr("type")].range;
 
 	m.type = nearest.attr("type");
-	m.x = parseInt(mLeft.substring(0, mLeft.length - 2)) + 30;
-	m.y = parseInt(mTop.substring(0, mTop.length - 2)) + 30;	
+	m.x = parseInt(nearest.css("left")) + 30;
+	m.y = parseInt(nearest.css("top")) + 30;	
 	m.addWidth = MONSTERS_DATA[m.type]['width'] / 2;
 	m.addHeight = MONSTERS_DATA[m.type]['height'] / 2;
 
@@ -269,8 +286,8 @@ function getRotation(element){
 * and its position
 **/
 function determineEquation(element, angle){
-	var x1 = parseInt(element.css("left").replace("px", "")) + 30 - 2;
-	var y1 = parseInt(element.css("top").replace("px", "")) + 30 - 2;
+	var x1 = parseInt(element.css("left")) + 30 - 2;
+	var y1 = parseInt(element.css("top")) + 30 - 2;
 	var x2 = (CASE_SIZE / 2);
 	var y2 = (CASE_SIZE / 2);
 

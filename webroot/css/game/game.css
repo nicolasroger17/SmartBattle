@@ -123,6 +123,14 @@
 }
 
 /* line 91, ../compass/sass/game/game.scss */
+.range {
+  border-radius: 50%;
+  position: absolute;
+  background: #0000aa;
+  opacity: 0.2;
+}
+
+/* line 98, ../compass/sass/game/game.scss */
 .bullet {
   position: absolute;
   height: 4px;
