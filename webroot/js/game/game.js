@@ -138,21 +138,69 @@ function placeTower(element){
 	var id = "tower" + towerNb;
 	towerNb++;
 
-	var tower = "<div class='tower' id='" + id + "' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
+	var tower = "<div class='tower' id='" + id + "' type='minigun' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
 	$("#gameboard").append(tower);
 	var t = $("#" + id);
 
+	var target;
 	var inter = setInterval(function(){
 		if($(".monster").length > 0){
-			t.pointat({target: "#" + t.nearest($(".monster"))[0].id});
-			fire(t);
+			var nearest = "#" + t.nearest($(".monster")).attr("id");
+			if(!target || !monsters[target.substring(1, target.length)] || !isInRange(t, target)){
+				target = nearest;
+			}
+
+			if(isInRange(t, target)){
+				t.pointat({target: target});
+				fire(t);
+			}				
 		}
 	}, 200);
 	towers[id] = {element: t, id: id, interval: inter};
 }
 
-function fireInterval(){
+/**
+* check if the nearest side of a monster
+* is in range of the tower
+**/
+function isInRange(element, nearest){
+	nearest = $(nearest);
+	var eLeft = element.css("left"), eTop = element.css("top"),
+		mLeft = nearest.css("left"), mTop = nearest.css("top"),
+		t = {}, m = {};
 
+	t.x = parseInt(eLeft.substring(0, eLeft.length - 2)) + 30;
+	t.y = parseInt(eTop.substring(0, eTop.length - 2)) + 30;
+	t.range = TOWERS_DATA[element.attr("type")].range;
+
+	m.type = nearest.attr("type");
+	m.x = parseInt(mLeft.substring(0, mLeft.length - 2)) + 30;
+	m.y = parseInt(mTop.substring(0, mTop.length - 2)) + 30;	
+	m.addWidth = MONSTERS_DATA[m.type]['width'] / 2;
+	m.addHeight = MONSTERS_DATA[m.type]['height'] / 2;
+
+	if(m.x <= t.x){
+		m.x += m.addWidth;
+	}
+	else{
+		m.x -= m.addWidth;
+	}
+
+	if(m.y <= t.y){
+		m.y += m.addHeight;
+	}
+	else{
+		m.y -= m.addHeight;
+	}
+
+	if(distance(t, m) <= t.range)
+		return true;
+
+	return false
+}
+
+function distance(tower, monster){
+	return Math.sqrt(Math.pow((monster.y - tower.y), 2) + Math.pow((monster.x - tower.x), 2));
 }
 
 /**
@@ -277,10 +325,10 @@ function updateImpact(){
 function updateMonsterPosition(){
 	$(".monster").each(function(){
 		var p = $(this).offset();
-		monsters[$(this)[0].id].x1 = p.left;
-		monsters[$(this)[0].id].x2 = p.left + $(this).width();
-		monsters[$(this)[0].id].y1 = p.top;
-		monsters[$(this)[0].id].y2 = p.top + $(this).height();
+		monsters[$(this).attr("id")].x1 = p.left;
+		monsters[$(this).attr("id")].x2 = p.left + $(this).width();
+		monsters[$(this).attr("id")].y1 = p.top;
+		monsters[$(this).attr("id")].y2 = p.top + $(this).height();
 	});
 }
 
@@ -290,8 +338,8 @@ function updateMonsterPosition(){
 function updateBulletPosition(){
 	$(".bullet").each(function(){
 		var p = $(this).offset();
-		bullets[$(this)[0].id].x = p.left;
-		bullets[$(this)[0].id].y = p.top;
+		bullets[$(this).attr("id")].x = p.left;
+		bullets[$(this).attr("id")].y = p.top;
 	});
 }
 

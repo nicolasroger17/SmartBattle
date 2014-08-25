@@ -2,8 +2,8 @@
 	"minigun": {
 		"price": [100, 45, 80, 130],
 		"damages": [3, 5, 7, 10],
-		"firerate": [],
-		"health": 30
-
+		"firerate": [2, 3, 4, 5],
+		"health": 30,
+		"range": 100
 	}
 }
