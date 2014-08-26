@@ -24,7 +24,8 @@ $space: 10px;
 }
 .infos_center{
 	text-align: center;
-	margin-left: -$space;
+	position: relative;
+	left: -$space;
 }
 .infos_right{
 	float: right;
@@ -93,6 +94,7 @@ $space: 10px;
 	position: absolute;
 	background: #0000aa;
 	opacity: 0.2;
+	pointer-events: none;
 }
 
 .bullet{
