@@ -4,7 +4,7 @@ var towers = {}, monsters = {}, bullets = {};
 
 var towerNb = 0, monsterNb = 0, bulletNb = 0;
 
-var currentWave = 0;
+var currentWave = 0, towerCase;
 
 $(document).ready(function(){
     $.ajax({
@@ -48,7 +48,17 @@ function initializeGame(){
 	});
 	$(".block[type='wall']").each(function(){
 		$(this).click(function(){
-			placeTower($(this));
+			displayTowerSelection();
+			towerCase = $(this);
+		});
+	});
+	$(".towerChoice").each(function(){
+		$(this).click(function(event){
+			event.stopPropagation();
+			if(towerCase){
+				placeTower($(this).attr("type"));
+				clearTowerSelection();
+			}
 		});
 	});
 	defineGameBoundaries();
@@ -129,19 +139,46 @@ function moveMonster(type, id){
 }
 
 /**
+* show the tower bar
+* and set a listener on html
+* for cancel
+**/
+function displayTowerSelection(){
+	var first = false;
+	$('html').click(function() {
+		if(first){
+			clearTowerSelection();
+		}
+		first = true;
+	});
+	$("#weapons").attr("isShown", "true");
+}
+
+/**
+* unbind html for cancel
+* hide the tower bar
+* unset the stored case
+**/
+function clearTowerSelection(){
+	$('html').unbind();
+	$("#weapons").attr("isShown", "false");
+	towerCase = null;
+}
+
+/**
 * Create a tower at the desired location
 * make it search for the nearest enemy
 * and fire at it
 **/
-function placeTower(element){
-	var pos = element.position();
+function placeTower(type){
+	var pos = towerCase.position();
 	var id = "tower" + towerNb;
 	towerNb++;
 
-	var tower = "<div class='tower' id='" + id + "' type='minigun' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
+	var tower = "<div class='tower' id='" + id + "' type='" + type + "' style='top: " + pos.top + "px; left: " + pos.left + "px;'></div>";
 	$("#gameboard").append(tower);
 	var t = $("#" + id);
-	rangeShower(t);
+	displayRange(t);
 
 	var target,
 		inter = setInterval(function(){
@@ -154,16 +191,19 @@ function placeTower(element){
 			if(isInRange(t, target)){
 				t.pointat({target: target});
 				fire(t);
-			}				
+			}
 		}
 	}, 200);
 	towers[id] = {element: t, id: id, interval: inter};
 }
 
-function rangeShower(tower){
+/**
+* show the range around the turret
+**/
+function displayRange(tower){
 	var range = TOWERS_DATA[tower.attr("type")].range,
 		size = 30 - range;
-		
+
 	tower.hover(
 		function(){
 			tower.append("<div id='range" + tower.attr("id") + "' " +
@@ -216,6 +256,10 @@ function isInRange(element, nearest){
 	return false
 }
 
+/**
+* calculate the distance between
+* the turret and the monster
+**/
 function distance(tower, monster){
 	return Math.sqrt(Math.pow((monster.y - tower.y), 2) + Math.pow((monster.x - tower.x), 2));
 }
@@ -286,10 +330,10 @@ function getRotation(element){
 * and its position
 **/
 function determineEquation(element, angle){
+	var barrelSize = TOWERS_DATA[element.attr("type")].barrelSize;
 	var x1 = parseInt(element.css("left")) + 30 - 2;
 	var y1 = parseInt(element.css("top")) + 30 - 2;
-	var x2 = (CASE_SIZE / 2);
-	var y2 = (CASE_SIZE / 2);
+	var x2 = y2 = barrelSize;
 
 	if(angle < 0)
 		angle += 360;
@@ -333,7 +377,7 @@ function updateImpact(){
 		updateMonsterPosition();
 		updateBulletPosition();
 		checkCollision();
-	}, 10);
+	}, 20);
 }
 
 /**
@@ -390,7 +434,6 @@ function destroyBullet(bullet){
 	bullet.element.remove();
 	clearInterval(bullet.interval);
 	delete bullets[bullet.id];
-	
 }
 
 /**

@@ -83,10 +83,39 @@ $space: 10px;
 
 .tower{
 	position: absolute;
-	transition: all 0.2s linear;
+	transition: all 0.2s linear;	
+}
+
+.tower,
+.towerChoice{
 	height: 60px;
 	width: 60px;
-	background: url('/webroot/images/towers/classic.png');
+}
+.towerChoice{
+	float: left;
+}
+
+.tower[type='minigun'],
+.towerChoice[type='minigun']{
+	background: url('/webroot/images/towers/minigun.png');
+}
+
+.tower[type='laser'],
+.towerChoice[type='laser']{
+	background: url('/webroot/images/towers/laser.png');
+}
+
+#weapons{
+	transition: opacity .2s linear;
+}
+
+#weapons[isShown='false']{
+	opacity: 0;
+	pointer-events: none;
+}
+
+#weapons[isShown='true']{
+	opacity: 1;
 }
 
 .range{

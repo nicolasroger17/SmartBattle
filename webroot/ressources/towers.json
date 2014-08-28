@@ -1,9 +1,17 @@
 {
 	"minigun": {
+		"barrelSize": 30,
 		"price": [100, 45, 80, 130],
 		"damages": [3, 5, 7, 10],
 		"firerate": [2, 3, 4, 5],
-		"health": 30,
 		"range": 100
+	},
+
+	"laser": {
+		"barrelSize": 15,
+		"price": [100, 45, 80, 130],
+		"damages": [3, 5, 7, 10],
+		"firerate": [2, 3, 4, 5],
+		"range": 140
 	}
 }
