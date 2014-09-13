@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Tanks !</title>
+        <style>
+            #board{
+                width: 1280px;
+                height: 800px;
+                margin: auto;
+                margin-top: 40px;
+                background: url('/public/board.jpg');
+            }
+            .tank{
+                background: url("/public/tank1.png");
+                height: 70px;
+                width: 70px;
+                background-position: 10px 10px;
+                position: absolute;
+                background-repeat: no-repeat;
+            }
+            .tube{
+                height: 70px;
+                width: 70px;
+                background: url('/public/tank1_top.png');
+                background-repeat: no-repeat;
+                transition: -webkit-transform 0.1s ease;
+            }
+            .missile{
+                width: 10px;
+                height : 10px;
+                border-radius: 10px;
+                background: black;
+                position: absolute;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Tank</h1>
+
+        <section id="playerList">
+            
+        </section>
+
+        <input type='button' id='startGame' value='Start Game'>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+
+            // Connexion à socket.io
+            var socket = io.connect('http://localhost:8080');
+
+            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
+            var pseudo = prompt('Quel est votre pseudo ?');
+            socket.emit('nouveau_client', pseudo);
+            document.title = pseudo + ' - ' + document.title;
+
+            // Quand un nouveau client se connecte, on affiche l'information
+            socket.on('refreshPlayers', function(pseudo) {
+                document.getElementById("playerList").innerHTML = "Listes des joueurs";
+                for(var i = 0; i < pseudo.length; i++){
+                    document.getElementById("playerList").innerHTML += "<p>"+pseudo[i]+"</p>";
+                }
+            });
+
+            socket.on('newGame', function(tanks) {
+                document.body.innerHTML = "";
+                document.body.innerHTML += "<div id='board'></div>";
+                for(var i = 0; i < tanks.length; i++){
+                    createTank(tanks[i]);
+                }
+                setListeners();
+            });
+
+            document.getElementById("startGame").onclick = function(){
+                socket.emit("gameStart");
+            }
+
+            socket.on('updateTank', function(tank){
+                updateTank(tank);
+            });
+
+            socket.on('createMissile', function(missile){
+                document.body.innerHTML += "<div class='missile' style='-webkit-transform: rotate("+missile.rotation+"deg); top:"+missile.top+"; left:"+missile.left+";' id='"+missile.id+"'></div>";
+            });
+
+            socket.on('updateGame', function(tanks, missiles){
+                for(var tank in tanks){
+                    updateTank(tanks[tank]);
+                }
+                for(var missile in missiles){
+                    updateMissile(missiles[missile]);
+                }
+            });
+
+            socket.on('updateMissiles', function(missiles){
+                for(var missile in missiles){
+                    document.getElementById(missiles[missile].id).style.top = missiles[missile].top+"px";
+                    document.getElementById(missiles[missile].id).style.left = missiles[missile].left+"px";
+                }
+            });
+
+            socket.on('deleteMissile', function(missile){
+                missile = document.getElementById(missile);
+                missile.parentNode.removeChild(missile);
+            });
+
+            var mouseListen;
+            var mousePos;
+
+            window.onmousemove = handleMouseMove;
+            function handleMouseMove(event) {
+                mousePos = event || window.event;
+            }
+
+            function createTank(tank){
+                var html = "<div id='"+tank.name+"' class='tank' style='margin-top : "+tank.position.top+"px;margin-left"+": "+tank.position.left+"px'>"+
+                                "<div class='tube'>"+
+                                "</div>"+
+                            "</div>";
+                document.getElementById("board").innerHTML += html;
+                mouseListen = setInterval(function(){
+                    socket.emit('action', keyList);
+                }, 20);
+            }
+
+            function updateTank(tank){
+                document.getElementById(tank.name).style.marginTop = tank.position.top+"px";
+                document.getElementById(tank.name).style.marginLeft = tank.position.left+"px";
+                document.getElementById(tank.name).getElementsByClassName("tube")[0].style.webkitTransform  = "rotate("+tank.rotation+"deg)";
+            }
+
+            function updateMissile(missile){
+                document.getElementById(missile.id).style.top = missile.top+"px";
+                document.getElementById(missile.id).style.left = missile.left+"px";
+            }
+
+            var keyList = {37: false, 38: false, 39: false, 40: false, 90: false, 83: false};
+            function setListeners(){
+                document.body.onkeydown = function(event){
+                    console.log(event);
+                    if(event.which == 37
+                        || event.which == 38
+                        || event.which == 39
+                        || event.which == 40
+                        || event.which == 83
+                        || event.which == 90){
+                        keyList[event.which] = true;
+                    }
+                    if(event.which == 32){
+                        socket.emit('fire');
+                    }
+                }
+                document.body.onkeyup = function(event){
+                    if(event.which == 37
+                        || event.which == 38
+                        || event.which == 39
+                        || event.which == 40
+                        || event.which == 83
+                        || event.which == 90){
+                        keyList[event.which] = false;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,5 +1,6 @@
 var fs = require('fs'),
-	path = require('path');
+	path = require('path'),
+	io = require('socket.io');
 
 var chooseMap = function(req, res){
 	fs.readdir(path.resolve(__dirname, "../webroot/ressources/maps"), function(err, data){
@@ -26,6 +27,12 @@ var game = function(req, res){
 			res.writeHead(301, {Location: '/home'});
 			res.end();
 		}
+	});
+}
+
+function socket(){
+	io.sockets.on('connection', function (socket, pseudo) {
+		
 	});
 }
 
